@@ -1,8 +1,8 @@
 package models.sources
 
 import models.matrices.ImageMatrix
-import models.pixels.RGBPixel
+import models.pixels.ColorPixel
 
-trait RandomSource extends ImageSource[ImageMatrix[RGBPixel]]{
+trait RandomSource extends ImageSource[ImageMatrix[ColorPixel]]{
 
 }

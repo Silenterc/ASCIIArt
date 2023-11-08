@@ -12,8 +12,8 @@ class CharPixelTests extends FunSuite{
     val pix = new CharPixel('L')
     pix.value = 'O'
     assert(pix.value =='O')
-
-
+    pix.value = 'K'
+    assert(pix.value == 'K')
   }
 
 }

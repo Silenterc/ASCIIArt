@@ -1,7 +1,7 @@
 package models.sources
 import models.matrices.ImageMatrix
-import models.pixels.RGBPixel
+import models.pixels.ColorPixel
 
 class MyRandomSource extends RandomSource{
-  override def getSource(): ImageMatrix[RGBPixel] = ???
+  override def getSource(): ImageMatrix[ColorPixel] = ???
 }
