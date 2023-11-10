@@ -14,12 +14,12 @@ class PNGImageLoader extends FileImageLoader[PNGFileSource] {
 
     val width = pngImage.getWidth()
     val height = pngImage.getHeight()
-    val matrix = Array.ofDim[ColorPixel](height, width)
+    val matrix = Array.ofDim[ColorPixel](width, height)
 
     for (x <- 0 until width) {
       for (y <- 0 until height) {
         val color:Color = new Color(pngImage.getRGB(x,y))
-        matrix(y)(x) = new ColorPixel(color)
+        matrix(x)(y) = new ColorPixel(color)
       }
     }
 
