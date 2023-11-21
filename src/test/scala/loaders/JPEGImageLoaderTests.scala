@@ -1,4 +1,4 @@
-package models.loaders
+package loaders
 
 import loaders.JPEGImageLoader
 import models.sources.JPEGFileSource
@@ -21,8 +21,8 @@ class JPEGImageLoaderTests extends FunSuite{
     val source = new JPEGFileSource(path)
     val imageMatrix = tested.load(source)
     assert(imageMatrix.matrix.nonEmpty)
-    assert(imageMatrix.matrix.size == 8)
-    assert(imageMatrix.matrix.forall(list => list.size == 2))
+    assert(imageMatrix.matrix.size == 2)
+    assert(imageMatrix.matrix.forall(list => list.size == 8))
     //TODO Complete check of values
 
   }
