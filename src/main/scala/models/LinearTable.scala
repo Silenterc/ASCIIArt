@@ -6,7 +6,7 @@ class LinearTable(strTable: String = "$@B%8&WM#*oahkbdpqwmZO0QLCJUYXzcvunxrjft/\
   createTable()
 
   private def checkInput(): Unit = {
-    if (strTable.isEmpty || strTable.length > 255) {
+    if (strTable.isEmpty || strTable.length > 256) {
       throw new Exception("Invalid Table String")
     }
   }

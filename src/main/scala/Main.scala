@@ -16,7 +16,8 @@ object Main extends App {
   val aCon = new ToAsciiLinearConverter()
   val image = aCon.convert(gCon.convert(im))
   val writer = new PrintWriter(new File("/Users/silenter/Desktop/OOP/ascii-art-zimaluk-1/src/test/pics/bird"))
-  for (row <- image.matrix) {
+  val matrix = image.getMatrix
+  for (row <- matrix) {
     for (pixel <- row) {
       writer.print(pixel.value + " ")
       //print(pixel.value)

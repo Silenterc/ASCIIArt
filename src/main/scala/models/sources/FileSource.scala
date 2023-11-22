@@ -4,9 +4,13 @@ import java.io.File
 import java.nio.file.{Files, Paths}
 
 abstract class FileSource(path:String) extends ImageSource[File]{
-  if (!Files.exists(Paths.get(path))) {
+  protected def mimeType: String
+  if (!Files.exists(Paths.get(path)) ||
+      !Files.isRegularFile(Paths.get(path)) ||
+      !(Files.probeContentType(Paths.get(path)) equals mimeType)) {
     throw new Exception("File does not exist")
   }
+
   protected val file = new File(path)
 
 }

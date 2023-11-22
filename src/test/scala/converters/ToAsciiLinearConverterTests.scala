@@ -18,12 +18,12 @@ class ToAsciiLinearConverterTests extends FunSuite{
 
     val result = tested.convert(input)
 
-    assert(result.matrix.size == 3)
-    assert(result.matrix.forall(list => list.size == 2))
+    assert(result.size == 3)
+    assert(result.forall(list => list.size == 2))
 
     val correctMatrix = List(List(CharPixel('.'), CharPixel('.')),
                              List(CharPixel('|'), CharPixel('.')),
                              List(CharPixel('|'), CharPixel('|')))
-    assert(result.matrix equals correctMatrix)
+    assert(result.getMatrix equals correctMatrix)
   }
 }
