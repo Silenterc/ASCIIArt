@@ -1,7 +1,6 @@
 package models.tables
 
-class LinearTable(strTable: String = "$@B%8&WM#*oahkbdpqwmZO0QLCJUYXzcvunxrjft/\\|()1{}[]?-_+~<>i!lI;:,\"^`'. ") {
-  private var table: Array[Char] = new Array[Char](256)
+class LinearTable(strTable: String = "$@B%8&WM#*oahkbdpqwmZO0QLCJUYXzcvunxrjft/\\|()1{}[]?-_+~<>i!lI;:,\"^`'. ") extends Table {
   checkInput()
   createTable()
 
@@ -11,7 +10,7 @@ class LinearTable(strTable: String = "$@B%8&WM#*oahkbdpqwmZO0QLCJUYXzcvunxrjft/\
     }
   }
 
-  private def createTable(): Unit = {
+  override protected def createTable(): Unit = {
     val strLen = strTable.length
     for (i <- table.indices) {
       val scaledIndex = (i * strLen) / 256
@@ -19,11 +18,11 @@ class LinearTable(strTable: String = "$@B%8&WM#*oahkbdpqwmZO0QLCJUYXzcvunxrjft/\
     }
   }
 
-  def getChar(index: Int): Char = {
+  override def getChar(index: Int): Char = {
     table(index)
   }
 
-  def getChar(index: Double): Char = {
+  override def getChar(index: Double): Char = {
     table(index.toInt)
   }
 

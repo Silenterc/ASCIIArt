@@ -82,7 +82,7 @@ class ImageMatrixTests extends FunSuite{
     var sum = 0
     tested.foreach(row => sum += row.map(_.value.toInt).sum)
 
-    assert(sum == 10)
+    assert(sum equals 10)
   }
   test("foreach should handle an empty matrix") {
     val tested = new ImageMatrix(List.empty[List[GreyscalePixel]])
@@ -90,7 +90,7 @@ class ImageMatrixTests extends FunSuite{
     var counter = 0
     tested.foreach(row => counter += 1)
 
-    assert(counter == 0)
+    assert(counter equals 0)
   }
   test("size should return the correct number of rows") {
     val tested = new ImageMatrix(List(
@@ -100,7 +100,7 @@ class ImageMatrixTests extends FunSuite{
 
     val result = tested.size()
 
-    assert(result == 2)
+    assert(result equals 2)
   }
 
   test("size should return 0 for an empty matrix") {
@@ -108,7 +108,7 @@ class ImageMatrixTests extends FunSuite{
 
     val result = tested.size()
 
-    assert(result == 0)
+    assert(result equals 0)
   }
 
   test("nonEmpty should return true for a non-empty matrix") {
@@ -155,7 +155,7 @@ class ImageMatrixTests extends FunSuite{
 
     val result = tested.height
 
-    assert(result == 3)
+    assert(result equals 3)
   }
 
   test("width should return the number of columns") {
@@ -167,7 +167,7 @@ class ImageMatrixTests extends FunSuite{
 
     val result = tested.width
 
-    assert(result == 2)
+    assert(result equals 2)
   }
 
   test("toString should return correct representation for ColorPixel") {
@@ -179,7 +179,7 @@ class ImageMatrixTests extends FunSuite{
     val result = tested.toString
 
     val expected = "[0,0,0] [255,255,255] \n[255,0,0] [0,255,255] \n"
-    assert(result == expected)
+    assert(result equals expected)
   }
 
   test("toString should return correct representation for GreyscalePixel") {
@@ -191,7 +191,7 @@ class ImageMatrixTests extends FunSuite{
     val result = tested.toString
 
     val expected = "1 2 \n3 4 \n"
-    assert(result == expected)
+    assert(result equals expected)
   }
 
   test("toString should return correct representation for charPixel") {
@@ -203,6 +203,6 @@ class ImageMatrixTests extends FunSuite{
     val result = tested.toString
 
     val expected = "l o l \n4 2 0 \n"
-    assert(result == expected)
+    assert(result equals expected)
   }
 }

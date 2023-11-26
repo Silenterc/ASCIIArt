@@ -21,5 +21,11 @@ class ColorPixelTests extends FunSuite{
     assert(pix.value equals Color.red)
     assert(pix.value equals new Color(255, 0, 0))
   }
+  test("test toString") {
+    val pix = ColorPixel(Color.black)
+    assert(pix.toString equals "[0,0,0]")
+    pix.value = Color.cyan
+    assert(pix.toString equals "[0,255,255]")
+  }
 
 }

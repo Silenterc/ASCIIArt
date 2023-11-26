@@ -27,4 +27,13 @@ class ToGreyscaleConverterTests extends FunSuite{
     assert(result.getMatrix equals correctMatrix)
 
   }
+
+
+  test("convert an empty input matrix") {
+    val input = new ImageMatrix(List.empty[List[ColorPixel]])
+    val tested = new ToGreyscaleConverter
+    val result = tested.convert(input)
+
+    assert(result.getMatrix.isEmpty)
+  }
 }

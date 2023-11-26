@@ -8,7 +8,7 @@ abstract class FileSource(path:String) extends ImageSource[File]{
   if (!Files.exists(Paths.get(path)) ||
       !Files.isRegularFile(Paths.get(path)) ||
       !(Files.probeContentType(Paths.get(path)) equals mimeType)) {
-    throw new Exception("File does not exist")
+    throw new Exception("File is invalid")
   }
 
   protected val file = new File(path)

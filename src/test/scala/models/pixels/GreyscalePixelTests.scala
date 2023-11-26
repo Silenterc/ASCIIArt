@@ -16,5 +16,11 @@ class GreyscalePixelTests extends FunSuite{
     pix.value = 20.9
     assert(pix.value == 20.9)
   }
+  test("test toString") {
+    val pix = GreyscalePixel(25)
+    assert(pix.toString equals "25")
+    pix.value = 4.20
+    assert(pix.toString equals "4")
+  }
 
 }

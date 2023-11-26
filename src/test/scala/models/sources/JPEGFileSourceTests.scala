@@ -4,8 +4,17 @@ import org.scalatest.FunSuite
 
 class JPEGFileSourceTests extends FunSuite{
 
-  test ("Succesfully load image") {
+  test ("Succesfully load image from absolute path") {
     val path = "/Users/silenter/Desktop/OOP/ascii-art-zimaluk-1/src/test/pics/Modus.jpeg"
+    val tested = new JPEGFileSource(path)
+    val source = tested.getSource()
+    assert(source.isFile)
+    assert(source.exists())
+    assert(source.getPath equals path)
+  }
+
+  test("Succesfully load image from relative path") {
+    val path = "src/test/pics/Modus.jpeg"
     val tested = new JPEGFileSource(path)
     val source = tested.getSource()
     assert(source.isFile)
@@ -18,8 +27,15 @@ class JPEGFileSourceTests extends FunSuite{
     val exc = intercept[Exception] {
       val tested = new JPEGFileSource(path)
     }
-    assert(exc.getMessage equals "File does not exist")
+    assert(exc.getMessage equals "File is invalid")
+  }
 
+  test("Throw when file has wrong ending = mimeType") {
+    val path = "/Users/silenter/Desktop/OOP/ascii-art-zimaluk-1/src/test/pics/sus.png"
+    val exc = intercept[Exception] {
+      val tested = new JPEGFileSource(path)
+    }
+    assert(exc.getMessage equals "File is invalid")
   }
 
   test("Throw when path is empty") {
@@ -27,7 +43,7 @@ class JPEGFileSourceTests extends FunSuite{
     val exc = intercept[Exception] {
       val tested = new JPEGFileSource(path)
     }
-    assert(exc.getMessage equals "File does not exist")
+    assert(exc.getMessage equals "File is invalid")
 
   }
   test("Throw when path is folder") {
@@ -35,7 +51,7 @@ class JPEGFileSourceTests extends FunSuite{
     val exc = intercept[Exception] {
       val tested = new JPEGFileSource(path)
     }
-    assert(exc.getMessage equals "File does not exist")
+    assert(exc.getMessage equals "File is invalid")
 
   }
 }
