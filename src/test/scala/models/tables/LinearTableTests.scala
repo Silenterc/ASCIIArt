@@ -1,6 +1,5 @@
 package models.tables
 
-import models.LinearTable
 import org.scalatest.FunSuite
 
 class LinearTableTests extends FunSuite{

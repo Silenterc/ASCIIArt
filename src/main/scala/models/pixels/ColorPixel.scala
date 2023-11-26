@@ -7,4 +7,8 @@ case class ColorPixel(initial: Color) extends Pixel[Color]{
   def red: Int = value.getRed
   def green: Int = value.getGreen
   def blue: Int = value.getBlue
+
+  override def toString: String = {
+    s"[$red,$green,$blue]"
+  }
 }

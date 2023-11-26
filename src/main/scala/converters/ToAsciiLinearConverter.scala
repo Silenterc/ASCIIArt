@@ -1,13 +1,13 @@
 package converters
 
-import models.LinearTable
 import models.matrices.ImageMatrix
 import models.pixels.{CharPixel, ColorPixel, GreyscalePixel}
+import models.tables.LinearTable
 
-class ToAsciiLinearConverter(tab: LinearTable = new LinearTable()) extends Converter[ImageMatrix[GreyscalePixel], ImageMatrix[CharPixel]] {
+class ToAsciiLinearConverter(tab: LinearTable = new LinearTable()) extends ToAsciiConverter {
   private var table: LinearTable = tab
   override def convert(imageMatrix: ImageMatrix[GreyscalePixel]): ImageMatrix[CharPixel] = {
-    imageMatrix.map {
+    imageMatrix.mapEvery {
       greyscalePixel =>
         CharPixel(table.getChar(greyscalePixel.value))
     }

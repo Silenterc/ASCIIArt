@@ -24,7 +24,7 @@ class JPEGImageLoaderTests extends FunSuite{
     val source = new JPEGFileSource(path)
     val imageMatrix = tested.load(source)
     assert(imageMatrix.nonEmpty)
-    assert(imageMatrix.size == 2)
+    assert(imageMatrix.size() == 2)
     assert(imageMatrix.forall(list => list.size == 8))
 
     val correctMatrix = List(List(ColorPixel(Color.black), ColorPixel(Color.black), ColorPixel(Color.black),

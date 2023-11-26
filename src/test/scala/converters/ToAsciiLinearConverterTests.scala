@@ -1,8 +1,9 @@
 package converters
 
 import models.matrices.ImageMatrix
-import models.{LinearTable, pixels}
+import models.pixels
 import models.pixels.{CharPixel, GreyscalePixel}
+import models.tables.LinearTable
 import org.scalatest.FunSuite
 
 import java.awt.Color
@@ -18,7 +19,7 @@ class ToAsciiLinearConverterTests extends FunSuite{
 
     val result = tested.convert(input)
 
-    assert(result.size == 3)
+    assert(result.size() == 3)
     assert(result.forall(list => list.size == 2))
 
     val correctMatrix = List(List(CharPixel('.'), CharPixel('.')),

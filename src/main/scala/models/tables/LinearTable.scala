@@ -1,4 +1,4 @@
-package models
+package models.tables
 
 class LinearTable(strTable: String = "$@B%8&WM#*oahkbdpqwmZO0QLCJUYXzcvunxrjft/\\|()1{}[]?-_+~<>i!lI;:,\"^`'. ") {
   private var table: Array[Char] = new Array[Char](256)

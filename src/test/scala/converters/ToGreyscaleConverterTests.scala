@@ -6,16 +6,16 @@ import org.scalatest.FunSuite
 
 import java.awt.Color
 
-class ToGrayscaleConverterTests extends FunSuite{
+class ToGreyscaleConverterTests extends FunSuite{
 
   test("Convert an existing 2x3 ImageMatrix[ColorPixel]") {
     val matrix = List(List(ColorPixel(Color.cyan), ColorPixel(Color.black)),
                       List(ColorPixel(Color.red), ColorPixel(Color.pink)),
                       List(ColorPixel(Color.white), ColorPixel(Color.yellow)))
     val input = new ImageMatrix(matrix)
-    val tested = new ToGrayscaleConverter
+    val tested = new ToGreyscaleConverter
     val result = tested.convert(input)
-    assert(result.size == 3)
+    assert(result.size() == 3)
     assert(result.forall(list => list.size == 2))
 
     val correctMatrix = List(List(GreyscalePixel(Color.cyan.getRed * 0.3 + Color.cyan.getGreen * 0.59 + Color.cyan.getBlue * 0.11),
