@@ -2,15 +2,19 @@ package models.sources
 
 import org.scalatest.FunSuite
 
+import scala.xml.Properties.envOrElse
+
 class JPEGFileSourceTests extends FunSuite{
 
   test ("Succesfully load image from absolute path") {
-    val path = "/Users/silenter/Desktop/OOP/ascii-art-zimaluk-1/src/test/pics/Modus.jpeg"
-    val tested = new JPEGFileSource(path)
-    val source = tested.getSource()
-    assert(source.isFile)
-    assert(source.exists())
-    assert(source.getPath equals path)
+    if (envOrElse("RUN_LOCAL_TEST", "false").toBoolean) {
+      val path = "/Users/silenter/Desktop/OOP/ascii-art-zimaluk-1/src/test/pics/Modus.jpeg"
+      val tested = new JPEGFileSource(path)
+      val source = tested.getSource()
+      assert(source.isFile)
+      assert(source.exists())
+      assert(source.getPath equals path)
+    }
   }
 
   test("Succesfully load image from relative path") {
