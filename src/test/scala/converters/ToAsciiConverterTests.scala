@@ -17,7 +17,7 @@ class ToAsciiConverterTests extends FunSuite {
 
     val result = tested.convert(input)
 
-    assert(result.size() == 3)
+    Predef.assert(result.size() == 3)
     assert(result.forall(list => list.size == 2))
 
     val correctMatrix = List(List(CharPixel('.'), CharPixel('.')),

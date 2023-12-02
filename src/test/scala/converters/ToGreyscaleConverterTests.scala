@@ -15,7 +15,7 @@ class ToGreyscaleConverterTests extends FunSuite{
     val input = new ImageMatrix(matrix)
     val tested = new ToGreyscaleConverter
     val result = tested.convert(input)
-    assert(result.size() == 3)
+    Predef.assert(result.size() == 3)
     assert(result.forall(list => list.size == 2))
 
     val correctMatrix = List(List(GreyscalePixel(Color.cyan.getRed * 0.3 + Color.cyan.getGreen * 0.59 + Color.cyan.getBlue * 0.11),
