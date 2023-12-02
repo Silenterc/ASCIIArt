@@ -52,7 +52,7 @@ class LinearTableTests extends FunSuite{
   }
 
   test("Construct a 256 char table with repeating \".#\"") {
-    val inputString = new String(".#").repeat(128)
+    val inputString = ".#" * 128
     val tested = new LinearTable(inputString)
     var testedOutput: String = new String()
     for (i <- 0 to 255) {
@@ -73,14 +73,14 @@ class LinearTableTests extends FunSuite{
   }
 
   test("Throw when too long table String") {
-    var inputString = new String("l").repeat(257)
+    var inputString = "l" * 257
 
     var exc = intercept[Exception] {
       val tested = new LinearTable(inputString)
     }
     assert(exc.getMessage equals "Invalid Table String")
 
-    inputString += new String("w").repeat(400)
+    inputString += "w" * 400
 
     exc = intercept[Exception] {
       val tested2 = new LinearTable(inputString)
