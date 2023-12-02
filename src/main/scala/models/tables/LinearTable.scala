@@ -1,6 +1,6 @@
 package models.tables
 
-class LinearTable(strTable: String = "$@B%8&WM#*oahkbdpqwmZO0QLCJUYXzcvunxrjft/\\|()1{}[]?-_+~<>i!lI;:,\"^`'. ") extends Table {
+class LinearTable(strTable: String) extends Table {
   checkInput()
   createTable()
 

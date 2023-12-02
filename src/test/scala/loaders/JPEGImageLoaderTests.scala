@@ -11,18 +11,18 @@ class JPEGImageLoaderTests extends FunSuite{
 
   test("Load an existing image and return a matrix filled with something") {
     val path = "/Users/silenter/Desktop/OOP/ascii-art-zimaluk-1/src/test/pics/Modus.jpeg"
-    val tested = new JPEGImageLoader()
     val source = new JPEGFileSource(path)
-    val imageMatrix = tested.load(source)
+    val tested = new JPEGImageLoader(source)
+    val imageMatrix = tested.load()
     assert(imageMatrix.nonEmpty)
 
   }
 
   test("Load an existing 8x2 image and return the corresponding matrix") {
     val path = "/Users/silenter/Desktop/OOP/ascii-art-zimaluk-1/src/test/pics/black8x2.jpeg"
-    val tested = new JPEGImageLoader()
     val source = new JPEGFileSource(path)
-    val imageMatrix = tested.load(source)
+    val tested = new JPEGImageLoader(source)
+    val imageMatrix = tested.load()
     assert(imageMatrix.nonEmpty)
     Predef.assert(imageMatrix.size() == 2)
     assert(imageMatrix.forall(list => list.size == 8))

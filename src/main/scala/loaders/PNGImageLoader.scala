@@ -9,7 +9,7 @@ import java.awt.image.BufferedImage
 import java.util
 import javax.imageio.ImageIO
 
-class PNGImageLoader extends FileImageLoader[PNGFileSource] {
+class PNGImageLoader(source: PNGFileSource) extends FileImageLoader {
 
   def removeTransparency(pngImage: BufferedImage): Unit = {
     val anotherOne = new BufferedImage(pngImage.getWidth, pngImage.getHeight, BufferedImage.TYPE_INT_RGB)
@@ -20,7 +20,7 @@ class PNGImageLoader extends FileImageLoader[PNGFileSource] {
     graphicsObject.dispose()
   }
 
-  override def load(source: PNGFileSource): ImageMatrix[ColorPixel] = {
+  override def load(): ImageMatrix[ColorPixel] = {
     val pngImage = ImageIO.read(source.getSource())
     removeTransparency(pngImage)
     val width = pngImage.getWidth()

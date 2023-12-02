@@ -116,7 +116,7 @@ class ConversionApplierTests extends FunSuite {
     assert(result equals asciiMatrix)
   }
 
-  test("Applying multiple filters with applyAll") {
+  test("Applying multiple filters with applyAll in correct order") {
     val filter1grey = mock[BrightnessFilter]
     val filter2grey = mock[InvertFilter]
     val filter3rgb = mock[RGBFilter]
@@ -192,6 +192,11 @@ class ConversionApplierTests extends FunSuite {
     val tested = new ConversionApplier(grayscaleConverter, asciiConverter)
 
     val result = tested.applyAll(colorMatrix)
+
+    val orderVerifier = inOrder(grayscaleConverter, asciiConverter)
+    orderVerifier.verify(grayscaleConverter, times(1)).convert(colorMatrix)
+    orderVerifier.verify(asciiConverter, times(1)).convert(greyMatrix)
+    orderVerifier.verifyNoMoreInteractions()
     assert(result equals asciiMatrix)
   }
 }

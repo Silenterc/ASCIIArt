@@ -7,8 +7,8 @@ import models.sources.{JPEGFileSource, PNGFileSource}
 import java.awt.Color
 import javax.imageio.ImageIO
 
-class JPEGImageLoader extends FileImageLoader[JPEGFileSource] {
-  override def load(source: JPEGFileSource): ImageMatrix[ColorPixel] = {
+class JPEGImageLoader(source: JPEGFileSource) extends FileImageLoader {
+  override def load(): ImageMatrix[ColorPixel] = {
     val pngImage = ImageIO.read(source.getSource())
 
     val width = pngImage.getWidth()
