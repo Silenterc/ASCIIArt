@@ -21,7 +21,6 @@ class JPEGImageLoader(source: JPEGFileSource) extends FileImageLoader {
         matrix(y)(x) = new ColorPixel(color)
       }
     }
-
     new ImageMatrix[ColorPixel](matrix.map(_.toList).toList)
 
   }
