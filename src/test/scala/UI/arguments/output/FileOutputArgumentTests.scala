@@ -19,9 +19,9 @@ class FileOutputArgumentTests extends FunSuite {
 
   test("FileOutputArgument should throw for an invalid path") {
     val exc = intercept[IllegalArgumentException] {
-      new FileOutputArgument("///íé").getResult
+      new FileOutputArgument("é./o/ //íé:.").getResult
     }
-    assert(exc.getMessage equals "The path ///íé is invalid.")
+    assert(exc.getMessage equals "The path é./o/ //íé:. is invalid.")
   }
 
 }
