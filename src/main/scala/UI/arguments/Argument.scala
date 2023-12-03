@@ -1,5 +1,5 @@
 package UI.arguments
 
-trait Argument[T] {
+trait Argument[+T] {
   def getResult :T
 }
