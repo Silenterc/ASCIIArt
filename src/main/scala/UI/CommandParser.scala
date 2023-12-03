@@ -15,44 +15,77 @@ class CommandParser(tables: Map[String, TableArgument[_ <: Table]]) {
   private val filterArguments = mutable.Queue[FilterArgument[_]]()
   private val outputArguments = mutable.Queue[OutputArgument[_]]()
   private var table:Option[TableArgument[_]] = Option.empty
-  def parse(args: Array[String]): Unit = {
-    args.toList.sliding(2, 2).foreach {
-      case List("--image", path) => {
-        if (inputArgument.isEmpty) {
-          inputArgument = Some(new FileInputArgument(path))
-        } else {
-          throw new IllegalArgumentException("You have input multiple Image Sources. You may only input one.")
-        }
-      }
-      case List("--image-random") => {
-        if (inputArgument.isEmpty) {
-          inputArgument = Some(new RandomInputArgument)
-        } else {
-          throw new IllegalArgumentException("You have input multiple Image Sources. You may only input one.")
-        }
-      }
-      case List("--scale", value) => filterArguments += new NearestNeighScaleFilterArgument(value)
-      case List("--invert") => filterArguments += new InvertFilterArgument
-      case List("--brightness", value) => filterArguments += new BrightnessFilterArgument(value)
-      case List("--output-file", outputPath) => outputArguments += new FileOutputArgument(outputPath)
-      case List("--output-console") => outputArguments += new ConsoleOutputArgument
-      case List("--table", tableName) => {
-        if (table.isDefined) {
-          throw new IllegalArgumentException("You have input multiple Tables. You may only input one.")
-        }
-        if (!tables.contains(tableName)) {
-          throw new IllegalArgumentException(s"You have input an invalid table name - $tableName")
-        }
 
-        table = Some(tables(tableName))
-      }
-      case List("--custom-table", chars) => {
-        if (table.isEmpty) {
-          table = Some(new CustomTableArgument(chars))
-        } else {
-          throw new IllegalArgumentException("You have input multiple Tables. You may only input one.")
+  private def checkValidNextIter(iter: Int, length: Int): Unit = {
+    if (iter + 1 >= length) {
+      throw new ArrayIndexOutOfBoundsException("You have not input all necessary data.")
+    }
+
+  }
+
+  def parse(args: Array[String]): Unit = {
+    var iter = 0
+
+    while (iter < args.length) {
+      args(iter) match {
+        case "--image"  => {
+          checkValidNextIter(iter, args.length)
+          iter += 1
+          if (inputArgument.isEmpty) {
+            inputArgument = Some(new FileInputArgument(args(iter)))
+          } else {
+            throw new IllegalArgumentException("You have input multiple Image Sources. You may only input one.")
+          }
         }
+        case "--image-random" => {
+          if (inputArgument.isEmpty) {
+            inputArgument = Some(new RandomInputArgument)
+          } else {
+            throw new IllegalArgumentException("You have input multiple Image Sources. You may only input one.")
+          }
+        }
+        case "--scale" => {
+          checkValidNextIter(iter, args.length)
+          iter += 1
+          filterArguments += new NearestNeighScaleFilterArgument(args(iter))
+        }
+        case "--invert" => filterArguments += new InvertFilterArgument
+        case "--brightness" => {
+          checkValidNextIter(iter, args.length)
+          iter += 1
+          filterArguments += new BrightnessFilterArgument(args(iter))
+        }
+        case "--output-file" => {
+          checkValidNextIter(iter, args.length)
+          iter += 1
+          outputArguments += new FileOutputArgument(args(iter))
+        }
+        case "--output-console" => outputArguments += new ConsoleOutputArgument
+        case "--table" => {
+          checkValidNextIter(iter, args.length)
+          iter += 1
+          val possibleTable = args(iter)
+          if (table.isDefined) {
+            throw new IllegalArgumentException("You have input multiple Tables. You may only input one.")
+          }
+          if (!tables.contains(possibleTable)) {
+            throw new IllegalArgumentException(s"You have input an invalid table name - $possibleTable")
+          }
+
+          table = Some(tables(possibleTable))
+        }
+        case "--custom-table" => {
+          checkValidNextIter(iter, args.length)
+          iter += 1
+          if (table.isEmpty) {
+            table = Some(new CustomTableArgument(args(iter)))
+          } else {
+            throw new IllegalArgumentException("You have input multiple Tables. You may only input one.")
+          }
+        }
+        case _ => throw new IllegalArgumentException("You have input data in the wrong format.")
       }
+      iter += 1
     }
   }
 
