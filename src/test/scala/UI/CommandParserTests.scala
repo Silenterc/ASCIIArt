@@ -1,9 +1,9 @@
 package UI
 
-import UI.arguments.filters.{BrightnessFilterArgument, FilterArgument, InvertFilterArgument, NearestNeighScaleFilterArgument}
+import UI.arguments.filters.{BrightnessFilterArgument, FilterArgument, InvertFilterArgument, NearestNeighScaleFilterArgument, ScaleFilterArgument}
 import UI.arguments.input.{FileInputArgument, RandomInputArgument}
 import UI.arguments.output.{ConsoleOutputArgument, FileOutputArgument}
-import UI.arguments.tables.{BourkesTableArgument, DefaultTableArgument, MyNonLinearTableArgument, TableArgument}
+import UI.arguments.tables.{BourkesTableArgument, CustomTableArgument, DefaultTableArgument, MyNonLinearTableArgument, TableArgument}
 import filters.Filter
 import filters.Greyscale.NearestNeighScaleFilter
 import loaders.{JPEGImageLoader, PNGImageLoader}
@@ -61,12 +61,28 @@ class CommandParserTests extends FunSuite {
     assert(exc.getMessage equals "You have input multiple Image Sources. You may only input one.")
   }
 
+  test("Parsing an Argument which needs a value behind it without it throws - InputArgument") {
+    val parser = new CommandParser(map)
+    val exc = intercept[ArrayIndexOutOfBoundsException] {
+      parser.parse(Array("--scale", "4", "--image"))
+    }
+    assert(exc.getMessage equals "You have not input all necessary data.")
+  }
+
   test("Parsing Scale") {
     val parser = new CommandParser(map)
     parser.parse(Array("--image", "src/test/pics/Modus.jpeg","--scale", "4.20"))
     val arr = parser.getFilterArguments
     assert(arr.size == 1)
-    assert(arr.head.isInstanceOf[NearestNeighScaleFilterArgument])
+    assert(arr.head.isInstanceOf[ScaleFilterArgument])
+  }
+
+  test("Parsing an Argument which needs a value behind it without it throws - Scale") {
+    val parser = new CommandParser(map)
+    val exc = intercept[ArrayIndexOutOfBoundsException] {
+      parser.parse(Array("--image", "src/test/pics/Modus.jpeg", "--scale"))
+    }
+    assert(exc.getMessage equals "You have not input all necessary data.")
   }
 
   test("Parsing Invert") {
@@ -134,6 +150,51 @@ class CommandParserTests extends FunSuite {
     val parser = new CommandParser(map)
     parser.parse(Array("--table", "nonlinear"))
     assert(parser.getTable.isInstanceOf[MyNonLinearTableArgument])
+  }
+
+  test("Parsing custom table") {
+    val parser = new CommandParser(map)
+    parser.parse(Array("--custom-table", "._§"))
+    assert(parser.getTable.isInstanceOf[CustomTableArgument])
+  }
+
+  test("Parsing invalid flags throws") {
+    val parser = new CommandParser(map)
+    val exc = intercept[IllegalArgumentException]{
+      parser.parse(Array("--output-file", "src/test/pics/file", "--image", "src/test/pics/Modus.jpeg","--bidibap", "--output-console"))
+    }
+    assert(exc.getMessage equals "You have input data in the wrong format: --bidibap.")
+
+  }
+
+  test("Parsing different things together - 1") {
+    val parser = new CommandParser(map)
+    parser.parse(Array("--output-file", "src/test/pics/file", "--brightness", "10", "--image", "src/test/pics/Modus.jpeg", "--invert", "--output-console"))
+    val input = parser.getInputArgument
+    assert(input.isInstanceOf[FileInputArgument])
+    val filters = parser.getFilterArguments
+    assert(filters.size == 2)
+    assert(filters.head.isInstanceOf[BrightnessFilterArgument])
+    assert(filters(1).isInstanceOf[InvertFilterArgument])
+    val outputs = parser.getOutputArguments
+    assert(outputs.size == 2)
+    assert(outputs.head.isInstanceOf[FileOutputArgument])
+    assert(outputs(1).isInstanceOf[ConsoleOutputArgument])
+  }
+
+  test("Parsing different things together - 2") {
+    val parser = new CommandParser(map)
+    parser.parse(Array("--image-random", "--scale", "0.25",
+                       "--brightness", "-10", "--output-console"))
+    val input = parser.getInputArgument
+    assert(input.isInstanceOf[RandomInputArgument])
+    val filters = parser.getFilterArguments
+    assert(filters.size == 2)
+    assert(filters.head.isInstanceOf[ScaleFilterArgument])
+    assert(filters(1).isInstanceOf[BrightnessFilterArgument])
+    val outputs = parser.getOutputArguments
+    assert(outputs.size == 1)
+    assert(outputs.head.isInstanceOf[ConsoleOutputArgument])
   }
 
 }

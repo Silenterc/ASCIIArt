@@ -84,7 +84,7 @@ class CommandParser(tables: Map[String, TableArgument[_ <: Table]]) {
             throw new IllegalArgumentException("You have input multiple Tables. You may only input one.")
           }
         }
-        case _ => throw new IllegalArgumentException("You have input data in the wrong format.")
+        case other => throw new IllegalArgumentException(s"You have input data in the wrong format: $other.")
       }
       iter += 1
     }
