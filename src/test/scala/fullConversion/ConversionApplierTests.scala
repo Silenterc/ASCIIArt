@@ -7,7 +7,7 @@ import filters.Greyscale.{BrightnessFilter, InvertFilter, NearestNeighScaleFilte
 import filters.RGB.RGBFilter
 import models.matrices.ImageMatrix
 import models.pixels.{CharPixel, ColorPixel, GreyscalePixel}
-import models.tables.LinearTable
+import models.tables.{DefaultTable, LinearTable}
 import org.mockito.ArgumentMatchersSugar.any
 import org.mockito.Mockito.inOrder
 import org.mockito.MockitoSugar.{mock, spy, times, verify, when}
@@ -23,7 +23,7 @@ class ConversionApplierTests extends FunSuite {
     val grayscaleConverter = mock[ToGreyscaleConverter]
     val asciiConverter = mock[ToAsciiConverter]
     val tested = new ConversionApplier(grayscaleConverter, asciiConverter)
-    tested.registerFilter(filter)
+    tested.registerGreyscaleFilter(filter)
     val inputMatrix = new ImageMatrix(List(
       List(GreyscalePixel(50), GreyscalePixel(100)),
       List(GreyscalePixel(150), GreyscalePixel(200))
@@ -43,10 +43,10 @@ class ConversionApplierTests extends FunSuite {
     val grayscaleConverter = mock[ToGreyscaleConverter]
     val asciiConverter = mock[ToAsciiConverter]
     val tested = new ConversionApplier(grayscaleConverter, asciiConverter)
-    tested.registerFilter(filter1)
-    tested.registerFilter(filter2)
-    tested.registerFilter(filter3)
-    tested.registerFilter(filter4)
+    tested.registerGreyscaleFilter(filter1)
+    tested.registerGreyscaleFilter(filter2)
+    tested.registerGreyscaleFilter(filter3)
+    tested.registerGreyscaleFilter(filter4)
     val inputMatrix = new ImageMatrix(List(
       List(GreyscalePixel(50), GreyscalePixel(100)),
       List(GreyscalePixel(150), GreyscalePixel(200))
@@ -104,7 +104,7 @@ class ConversionApplierTests extends FunSuite {
     when(filter.apply(greyMatrix)).thenReturn(greyMatrix)
 
     val tested = new ConversionApplier(grayscaleConverter, asciiConverter)
-    tested.registerFilter(filter)
+    tested.registerGreyscaleFilter(filter)
 
     val result = tested.applyAll(colorMatrix)
 
@@ -143,11 +143,11 @@ class ConversionApplierTests extends FunSuite {
     when(asciiConverter.convert(greyMatrix)).thenReturn(asciiMatrix)
 
     val tested = new ConversionApplier(grayscaleConverter, asciiConverter)
-    tested.registerFilter(filter1grey)
-    tested.registerFilter(filter2grey)
-    tested.registerFilter(filter3rgb)
-    tested.registerFilter(filter4ascii)
-    tested.registerFilter(filter5grey)
+    tested.registerGreyscaleFilter(filter1grey)
+    tested.registerGreyscaleFilter(filter2grey)
+    tested.registerRGBFilter(filter3rgb)
+    tested.registerASCIIFilter(filter4ascii)
+    tested.registerGreyscaleFilter(filter5grey)
 
     when(filter1grey.apply(greyMatrix)).thenReturn(greyMatrix)
     when(filter2grey.apply(greyMatrix)).thenReturn(greyMatrix)
@@ -198,5 +198,20 @@ class ConversionApplierTests extends FunSuite {
     orderVerifier.verify(asciiConverter, times(1)).convert(greyMatrix)
     orderVerifier.verifyNoMoreInteractions()
     assert(result equals asciiMatrix)
+  }
+
+  test("Registering multiple different Filters with registerFilter() distinguishes them correctly") {
+    val filterInvert = new InvertFilter()
+    val filterBrightness = new BrightnessFilter(1)
+    val filterascii = mock[ASCIIFilter]
+
+    val tested = spy(new ConversionApplier(new ToGreyscaleConverter, new ToAsciiConverter(new DefaultTable)))
+    tested.registerFilter(filterInvert)
+    tested.registerFilter(filterBrightness)
+    tested.registerFilter(filterascii)
+    verify(tested, times(2)).registerGreyscaleFilter(_)
+    verify(tested, times(1)).registerASCIIFilter(_)
+    verify(tested, times(0)).registerRGBFilter(_)
+
   }
 }

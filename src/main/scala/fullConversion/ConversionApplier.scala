@@ -2,6 +2,7 @@ package fullConversion
 
 import converters.{ToAsciiConverter, ToGreyscaleConverter}
 import filters.ASCII.ASCIIFilter
+import filters.Filter
 import filters.Greyscale.GreyscaleFilter
 import filters.RGB.RGBFilter
 import models.matrices.ImageMatrix
@@ -14,16 +15,21 @@ class ConversionApplier(greyscaleConverter: ToGreyscaleConverter, toAsciiConvert
   private var asciiFilters: mutable.Queue[ASCIIFilter] = new mutable.Queue[ASCIIFilter]
   private var greyscaleFilters: mutable.Queue[GreyscaleFilter] = new mutable.Queue[GreyscaleFilter]
   private var rgbFilters: mutable.Queue[RGBFilter] = new mutable.Queue[RGBFilter]
-
-  def registerFilter(filter: ASCIIFilter): Unit = {
+  def registerFilter(filter: Filter[_]): Unit = filter match{
+    case f:ASCIIFilter => registerASCIIFilter(f)
+    case f:GreyscaleFilter => registerGreyscaleFilter(f)
+    case f: RGBFilter => registerRGBFilter(f)
+    case _ => throw new IllegalArgumentException("Wrong filter type.")
+  }
+  def registerASCIIFilter(filter: ASCIIFilter): Unit = {
     asciiFilters += filter
   }
 
-  def registerFilter(filter: GreyscaleFilter): Unit = {
+  def registerGreyscaleFilter(filter: GreyscaleFilter): Unit = {
     greyscaleFilters += filter
   }
 
-  def registerFilter(filter: RGBFilter): Unit = {
+  def registerRGBFilter(filter: RGBFilter): Unit = {
     rgbFilters += filter
   }
   def applyRgbFilters(imageMatrix: ImageMatrix[ColorPixel]): ImageMatrix[ColorPixel] = {

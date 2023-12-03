@@ -5,7 +5,7 @@ import UI.arguments.filters.{BrightnessFilterArgument, FilterArgument, InvertFil
 import UI.arguments.input.{FileInputArgument, InputArgument, RandomInputArgument}
 import UI.arguments.output.{ConsoleOutputArgument, FileOutputArgument, OutputArgument}
 import UI.arguments.tables.{CustomTableArgument, DefaultTableArgument, TableArgument}
-import exporters.Exporter
+import exporters.{Exporter, ImageMatrixExporter}
 import filters.Filter
 import models.tables.{LinearTable, Table}
 
@@ -14,7 +14,7 @@ import scala.collection.mutable
 class CommandParser(tables: Map[String, TableArgument[_ <: Table]]) {
   private var inputArgument:Option[InputArgument] = Option.empty
   private val filterArguments = mutable.Queue[FilterArgument[_ <: Filter[_]]]()
-  private val outputArguments = mutable.Queue[OutputArgument[_ <: Exporter[_]]]()
+  private val outputArguments = mutable.Queue[OutputArgument[_ <: ImageMatrixExporter]]()
   private var table:Option[TableArgument[_ <: Table]] = Option.empty
 
   private def checkValidNextIter(iter: Int, length: Int): Unit = {
@@ -97,7 +97,7 @@ class CommandParser(tables: Map[String, TableArgument[_ <: Table]]) {
     filterArguments.toSeq
   }
 
-  def getOutputArguments: Seq[OutputArgument[_ <: Exporter[_]]] = {
+  def getOutputArguments: Seq[OutputArgument[_ <: ImageMatrixExporter]] = {
     outputArguments.toSeq
   }
 
