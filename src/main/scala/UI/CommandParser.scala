@@ -12,8 +12,8 @@ import scala.collection.mutable
 
 class CommandParser(tables: Map[String, TableArgument[_ <: Table]]) {
   private var inputArgument:Option[InputArgument] = Option.empty
-  private var filterArguments = mutable.Queue[FilterArgument[_]]()
-  private var outputArguments = mutable.Queue[OutputArgument[_]]()
+  private val filterArguments = mutable.Queue[FilterArgument[_]]()
+  private val outputArguments = mutable.Queue[OutputArgument[_]]()
   private var table:Option[TableArgument[_]] = Option.empty
   def parse(args: Array[String]): Unit = {
     args.toList.sliding(2, 2).foreach {
