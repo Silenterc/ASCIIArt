@@ -152,6 +152,14 @@ class CommandParserTests extends FunSuite {
     assert(parser.getTable.isInstanceOf[MyNonLinearTableArgument])
   }
 
+  test("Parsing invalid table name") {
+    val parser = new CommandParser(map)
+    val exc = intercept[IllegalArgumentException]{
+      parser.parse(Array("--table", "zimalukTable"))
+    }
+    assert(exc.getMessage equals "You have input an invalid table name - zimalukTable")
+  }
+
   test("Parsing custom table") {
     val parser = new CommandParser(map)
     parser.parse(Array("--custom-table", "._§"))

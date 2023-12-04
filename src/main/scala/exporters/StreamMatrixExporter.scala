@@ -5,9 +5,17 @@ import models.pixels.Pixel
 
 import java.io.OutputStream
 
+/**
+ * Exporter of an ImageMatrix to some output Stream
+ * @param outputStream some output Stream
+ */
 class StreamMatrixExporter(outputStream : OutputStream) extends ImageMatrixExporter {
   private var closed = false
 
+  /**
+   * Exports mat to the stream given in the constructor
+   * @param mat ImageMatrix to be exported
+   */
   protected def exportToStream(mat: ImageMatrix[Pixel[_]]): Unit = {
 
     if (closed)
@@ -19,6 +27,9 @@ class StreamMatrixExporter(outputStream : OutputStream) extends ImageMatrixExpor
     outputStream.flush()
   }
 
+  /**
+   * Closes the stream
+   */
   def close(): Unit = {
     if (closed)
       return
