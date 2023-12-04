@@ -4,9 +4,15 @@ import models.pixels.ColorPixel
 
 import java.awt.Color
 import scala.util.Random
-
+/**
+ * Random source of Image which I pioneered
+ */
 class MyRandomSource extends RandomSource{
-  override def getSource(): ImageMatrix[ColorPixel] = {
+  /**
+   * Creates a ColorPixel Matrix by making random colors for each pixel
+   * @return random ColorPixel matrix
+   */
+  override def getSource: ImageMatrix[ColorPixel] = {
     val height = Random.between(1, maxHeight + 1)
     val width = Random.between(1, maxWidth + 1)
     val currMatrix = Array.ofDim[ColorPixel](height, width)

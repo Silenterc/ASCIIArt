@@ -63,4 +63,16 @@ class StreamMatrixExporterTests extends FunSuite{
     assert(stream.toString("UTF-8") equals expected)
     assert(stream.toString("UTF-8") equals matrix.toString)
   }
+
+  test("Export to closed stream throws") {
+    val stream = new ByteArrayOutputStream()
+    val exporter = new StreamMatrixExporter(stream)
+    val matrix = new ImageMatrix(List.empty[List[CharPixel]])
+    exporter.close()
+    val exc = intercept[Exception] {
+      exporter.export(matrix)
+    }
+    assert(exc.getMessage equals "The stream is already closed")
+
+  }
 }
