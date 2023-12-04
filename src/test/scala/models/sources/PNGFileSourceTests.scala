@@ -10,7 +10,7 @@ class PNGFileSourceTests extends FunSuite{
     if (envOrElse("RUN_LOCAL_TEST", "false").toBoolean) {
       val path = "/Users/silenter/Desktop/OOP/ascii-art-zimaluk-1/src/test/pics/sus.png"
       val tested = new PNGFileSource(path)
-      val source = tested.getSource()
+      val source = tested.getSource
       assert(source.isFile)
       assert(source.exists())
       assert(source.getPath equals path)
@@ -20,7 +20,7 @@ class PNGFileSourceTests extends FunSuite{
   test("Succesfully load image from relative path") {
     val path = "src/test/pics/sus.png"
     val tested = new PNGFileSource(path)
-    val source = tested.getSource()
+    val source = tested.getSource
     assert(source.isFile)
     assert(source.exists())
     assert(source.getPath equals path)
