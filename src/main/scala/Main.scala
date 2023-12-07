@@ -16,18 +16,22 @@ object Main extends App {
   val allowedTables: Map[String, TableArgument[Table]] = Map("default" -> new DefaultTableArgument,
                                                              "bourkes" -> new BourkesTableArgument,
                                                              "nonlinear" -> new MyNonLinearTableArgument)
-  val parser = new CommandParser(allowedTables)
-  parser.parse(args)
-  val inputArg = parser.getInputArgument
-  val loader = inputArg.getResult
-  val filters = parser.getFilterArguments
-  val outputArgs = parser.getOutputArguments
-  val tableArg = parser.getTable
-  val table = tableArg.getResult
-  val fullApplier = new ConversionApplier(new ToGreyscaleConverter, new ToAsciiConverter(table))
-  filters.foreach(f => fullApplier.registerFilter(f.getResult))
-  val inputMat = loader.load()
-  val resultMatrix = fullApplier.applyAll(inputMat)
-  outputArgs.foreach(e => e.getResult.export(resultMatrix))
+  try {
+    val parser = new CommandParser(allowedTables)
+    parser.parse(args)
+    val inputArg = parser.getInputArgument
+    val loader = inputArg.getResult
+    val filters = parser.getFilterArguments
+    val outputArgs = parser.getOutputArguments
+    val tableArg = parser.getTable
+    val table = tableArg.getResult
+    val fullApplier = new ConversionApplier(new ToGreyscaleConverter, new ToAsciiConverter(table))
+    filters.foreach(f => fullApplier.registerFilter(f.getResult))
+    val inputMat = loader.load()
+    val resultMatrix = fullApplier.applyAll(inputMat)
+    outputArgs.foreach(e => e.getResult.export(resultMatrix))
+  } catch {
+    case default:Throwable => println(default.getMessage)
+  }
 
 }
