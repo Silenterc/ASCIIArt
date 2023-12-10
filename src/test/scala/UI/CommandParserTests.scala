@@ -166,6 +166,20 @@ class CommandParserTests extends FunSuite {
     assert(parser.getTable.isInstanceOf[CustomTableArgument])
   }
 
+  test("Parsing multiple tables throws") {
+    val parser = new CommandParser(map)
+    val exc = intercept[IllegalArgumentException] {
+      parser.parse(Array("--image-random", "--custom-table", "._§", "--table", "bourkes"))
+    }
+    assert(exc.getMessage equals "You have input multiple Tables. You may only input one.")
+  }
+
+  test("Getting Table when none was parsed returns DefaultTable") {
+    val parser = new CommandParser(map)
+    parser.parse(Array("--image-random", "--output-console"))
+    assert(parser.getTable.isInstanceOf[DefaultTableArgument])
+  }
+
   test("Parsing invalid flags throws") {
     val parser = new CommandParser(map)
     val exc = intercept[IllegalArgumentException]{
@@ -188,6 +202,8 @@ class CommandParserTests extends FunSuite {
     assert(outputs.size == 2)
     assert(outputs.head.isInstanceOf[FileOutputArgument])
     assert(outputs(1).isInstanceOf[ConsoleOutputArgument])
+    val table = parser.getTable
+    assert(table.isInstanceOf[DefaultTableArgument])
   }
 
   test("Parsing different things together - 2") {
@@ -203,6 +219,28 @@ class CommandParserTests extends FunSuite {
     val outputs = parser.getOutputArguments
     assert(outputs.size == 1)
     assert(outputs.head.isInstanceOf[ConsoleOutputArgument])
+    val table = parser.getTable
+    assert(table.isInstanceOf[DefaultTableArgument])
+  }
+
+  test("Parsing different things together - 3") {
+    val parser = new CommandParser(map)
+    parser.parse(Array("--image", "src/test/pics/Modus.jpeg", "--invert",
+      "--brightness", "2", "--invert", "--output-file", "src/test/pics/Modus", "--output-console", "--table", "bourkes", "--invert"))
+    val input = parser.getInputArgument
+    assert(input.isInstanceOf[FileInputArgument])
+    val filters = parser.getFilterArguments
+    assert(filters.size == 4)
+    assert(filters.head.isInstanceOf[InvertFilterArgument])
+    assert(filters(1).isInstanceOf[BrightnessFilterArgument])
+    assert(filters(2).isInstanceOf[InvertFilterArgument])
+    assert(filters(3).isInstanceOf[InvertFilterArgument])
+    val outputs = parser.getOutputArguments
+    assert(outputs.size == 2)
+    assert(outputs.head.isInstanceOf[FileOutputArgument])
+    assert(outputs(1).isInstanceOf[ConsoleOutputArgument])
+    val table = parser.getTable
+    assert(table.isInstanceOf[BourkesTableArgument])
   }
 
 }
