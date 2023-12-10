@@ -1,5 +1,5 @@
 package models.tables
 
-trait NonLinearTable extends Table{
+trait NonLinearTable extends ArrayedTable{
 
 }

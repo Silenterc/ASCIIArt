@@ -1,6 +1,6 @@
 package models.tables
 
-class LinearTable(strTable: String) extends Table {
+class LinearTable(strTable: String) extends ArrayedTable {
   checkInput()
   createTable()
 
