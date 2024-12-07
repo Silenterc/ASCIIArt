@@ -4,6 +4,8 @@
 
 The idea of this project is to load images, translate them into ASCII ART images, optionally apply filters, and save them. (https://courses.fit.cvut.cz/BI-OOP/projects/ASCII-art.html)
 
+This project´s goal is to showcase OOP oriented design in all its glory. It is written in Scala with maximum extensibility in mind.
+
 ## Useful knowledge
 
 The pics are in the src/test/pics folder. The program's arguments can be input according to the assignment.
